@@ -1,0 +1,32 @@
+# ROS2 Workspace
+build/
+install/
+log/
+
+# IDE
+.vscode/
+.idea/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# Python
+__pycache__/
+*.pyc
+
+# Temporary
+*.swp
+*.swo
+*~
+
+# Binary
+*.o
+*.so
+*.a
+
+# ROS Bag
+*.db3
+*.mcap
