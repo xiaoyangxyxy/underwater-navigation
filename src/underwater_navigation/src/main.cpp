@@ -11,6 +11,10 @@ int main(int argc, char **argv)
 
     GraphManager graph_manager;
 
+    graph_manager.addPriorPose();
+    graph_manager.addBetweenPose();
+    graph_manager.optimize();
+
     std::cout << "GraphManager created successfully." << std::endl;
 
     return 0;
