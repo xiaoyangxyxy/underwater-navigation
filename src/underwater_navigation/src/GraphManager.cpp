@@ -18,10 +18,10 @@ GraphManager::GraphManager()
 
     frame_index_ = 0;
 
-    current_pose_key_ =
-        gtsam::Symbol('x',0);
-}
+    current_pose_key_ = gtsam::Symbol('x', 0);
 
+    current_pose_estimate_ = gtsam::Pose3::Identity();
+}
 void GraphManager::addPriorPose()
 {
     const gtsam::Pose3 prior_pose = gtsam::Pose3::Identity();
@@ -45,6 +45,9 @@ void GraphManager::optimize()
     isam2_.update();
 
     const gtsam::Values result = isam2_.calculateEstimate();
+
+    current_pose_estimate_ =
+        result.at<gtsam::Pose3>(current_pose_key_);
 
     result.print("Current estimate:\n");
 
@@ -73,9 +76,23 @@ void GraphManager::addBetweenPose()
         between_noise
     ));
 
-    const gtsam::Pose3 next_pose_initial = gtsam::Pose3::Identity().compose(relative_pose);
+    const gtsam::Pose3 next_pose_initial =
+        current_pose_estimate_.compose(relative_pose);
 
     new_values_.insert(next_pose_key, next_pose_initial);
     current_pose_key_ = next_pose_key;
     frame_index_++;
+}
+
+void GraphManager::addImuMeasurement(
+    const gtsam::Vector3& acc,
+    const gtsam::Vector3& gyro,
+    double dt)
+{
+    imu_manager_.addMeasurement(acc, gyro, dt);
+}
+
+void GraphManager::printImuPreintegration() const
+{
+    imu_manager_.printPreintegration();
 }

@@ -31,6 +31,7 @@ endif()
 add_executable(navigation_node
   src/main.cpp
   src/GraphManager.cpp
+  src/imu/ImuFactorManager.cpp
 )
 
 target_include_directories(navigation_node PUBLIC

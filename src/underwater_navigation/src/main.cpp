@@ -11,7 +11,19 @@ int main(int argc, char **argv)
 
     GraphManager graph_manager;
 
+   for (int i = 0; i < 100; ++i)
+{
+    graph_manager.addImuMeasurement(
+        gtsam::Vector3(1.0, 0.0, 0.0),
+        gtsam::Vector3(0.0, 0.0, 0.0),
+        0.01
+    );
+}
+
+graph_manager.printImuPreintegration();
+
     graph_manager.addPriorPose();
+    graph_manager.addBetweenPose();
     graph_manager.addBetweenPose();
     graph_manager.optimize();
 

@@ -1,0 +1,29 @@
+#pragma once
+
+#include <gtsam/navigation/CombinedImuFactor.h>
+#include <gtsam/navigation/ImuBias.h>
+
+#include <memory>
+
+class ImuFactorManager
+{
+public:
+
+    ImuFactorManager();
+
+    void addMeasurement(
+        const gtsam::Vector3& acc,
+        const gtsam::Vector3& gyro,
+        double dt
+    );
+
+    void printPreintegration() const;
+
+private:
+
+    std::shared_ptr<gtsam::PreintegrationCombinedParams> imu_params_;
+
+    gtsam::imuBias::ConstantBias current_bias_;
+
+    std::unique_ptr<gtsam::PreintegratedCombinedMeasurements> preintegrator_;
+};
