@@ -4,6 +4,7 @@
 #include <gtsam/nonlinear/Values.h>
 #include <gtsam/nonlinear/ISAM2.h>
 #include <gtsam/geometry/Pose3.h>
+#include <gtsam/navigation/NavState.h>
 
 #include "underwater_navigation/imu/ImuFactorManager.hpp"
 
@@ -14,9 +15,9 @@ public:
     GraphManager();
 
     void addPriorPose();
-
     void addBetweenPose();
-
+    void addPriorNavState();
+    void addPriorBias();
     void optimize();
 
     void addImuMeasurement(
@@ -27,6 +28,8 @@ public:
 
     void printImuPreintegration() const;
 
+    const gtsam::imuBias::ConstantBias& currentBias() const;
+
 private:
 
     gtsam::NonlinearFactorGraph graph_;
@@ -36,10 +39,12 @@ private:
     gtsam::ISAM2 isam2_;
 
     gtsam::Key current_pose_key_;
+    gtsam::Key current_bias_key_;
 
     size_t frame_index_;
 
     gtsam::Pose3 current_pose_estimate_;
+    gtsam::NavState current_nav_state_;
 
     ImuFactorManager imu_manager_;
 };

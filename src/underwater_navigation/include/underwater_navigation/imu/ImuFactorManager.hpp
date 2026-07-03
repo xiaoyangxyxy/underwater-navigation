@@ -19,6 +19,8 @@ public:
 
     void printPreintegration() const;
 
+    const gtsam::imuBias::ConstantBias& currentBias() const;
+
 private:
 
     std::shared_ptr<gtsam::PreintegrationCombinedParams> imu_params_;

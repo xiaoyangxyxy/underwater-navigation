@@ -51,3 +51,8 @@ void ImuFactorManager::printPreintegration() const
     std::cout << "deltaR = " << std::endl;
     preintegrator_->deltaRij().print();
 }
+
+const gtsam::imuBias::ConstantBias& ImuFactorManager::currentBias() const
+{
+    return current_bias_;
+}

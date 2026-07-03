@@ -4,6 +4,8 @@
 #include <gtsam/inference/Symbol.h>
 #include <gtsam/base/Vector.h>
 #include <gtsam/slam/BetweenFactor.h>
+#include <gtsam/nonlinear/PriorFactor.h>
+#include <gtsam/base/Vector.h>
 
 #include <iostream>
 
@@ -19,8 +21,14 @@ GraphManager::GraphManager()
     frame_index_ = 0;
 
     current_pose_key_ = gtsam::Symbol('x', 0);
+    current_bias_key_ = gtsam::Symbol('b', 0);
 
     current_pose_estimate_ = gtsam::Pose3::Identity();
+
+    current_nav_state_ = gtsam::NavState(
+        gtsam::Pose3::Identity(),
+        gtsam::Vector3::Zero()
+    );
 }
 void GraphManager::addPriorPose()
 {
@@ -46,9 +54,12 @@ void GraphManager::optimize()
 
     const gtsam::Values result = isam2_.calculateEstimate();
 
-    current_pose_estimate_ =
-        result.at<gtsam::Pose3>(current_pose_key_);
+    current_nav_state_ =
+    result.at<gtsam::NavState>(current_pose_key_);
 
+    current_pose_estimate_ =
+    current_nav_state_.pose();
+    
     result.print("Current estimate:\n");
 
     graph_.resize(0);
@@ -95,4 +106,44 @@ void GraphManager::addImuMeasurement(
 void GraphManager::printImuPreintegration() const
 {
     imu_manager_.printPreintegration();
+}
+
+void GraphManager::addPriorNavState()
+{
+    const auto nav_noise = gtsam::noiseModel::Diagonal::Sigmas(
+        (gtsam::Vector(9) << 
+            0.01, 0.01, 0.01,   // rotation
+            0.01, 0.01, 0.01,   // position
+            0.01, 0.01, 0.01    // velocity
+        ).finished()
+    );
+
+    graph_.add(gtsam::PriorFactor<gtsam::NavState>(
+        current_pose_key_,
+        current_nav_state_,
+        nav_noise
+    ));
+
+    new_values_.insert(current_pose_key_, current_nav_state_);
+}
+
+void GraphManager::addPriorBias()
+{
+    const auto bias_noise = gtsam::noiseModel::Diagonal::Sigmas(
+        (gtsam::Vector(6) <<
+            0.001, 0.001, 0.001,   // gyro bias
+            0.01,  0.01,  0.01     // accel bias
+        ).finished()
+    );
+
+    graph_.add(gtsam::PriorFactor<gtsam::imuBias::ConstantBias>(
+        current_bias_key_,
+        imu_manager_.currentBias(),
+        bias_noise
+    ));
+
+    new_values_.insert(
+        current_bias_key_,
+        imu_manager_.currentBias()
+    );
 }
