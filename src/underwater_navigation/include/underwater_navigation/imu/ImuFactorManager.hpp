@@ -19,6 +19,8 @@ public:
 
     void printPreintegration() const;
 
+    void resetIntegration();
+
     const gtsam::imuBias::ConstantBias& currentBias() const;
 
     const gtsam::PreintegratedCombinedMeasurements&

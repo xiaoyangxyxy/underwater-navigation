@@ -56,11 +56,11 @@ void GraphManager::optimize()
 
     const gtsam::Values result = isam2_.calculateEstimate();
 
-    current_nav_state_ =
-    result.at<gtsam::NavState>(current_pose_key_);
-
     current_pose_estimate_ =
-    current_nav_state_.pose();
+    result.at<gtsam::Pose3>(current_pose_key_);
+
+    current_velocity_estimate_ =
+        result.at<gtsam::Vector3>(current_velocity_key_);
     
     result.print("Current estimate:\n");
 
@@ -110,25 +110,6 @@ void GraphManager::printImuPreintegration() const
     imu_manager_.printPreintegration();
 }
 
-void GraphManager::addPriorNavState()
-{
-    const auto nav_noise = gtsam::noiseModel::Diagonal::Sigmas(
-        (gtsam::Vector(9) << 
-            0.01, 0.01, 0.01,   // rotation
-            0.01, 0.01, 0.01,   // position
-            0.01, 0.01, 0.01    // velocity
-        ).finished()
-    );
-
-    graph_.add(gtsam::PriorFactor<gtsam::NavState>(
-        current_pose_key_,
-        current_nav_state_,
-        nav_noise
-    ));
-
-    new_values_.insert(current_pose_key_, current_nav_state_);
-}
-
 void GraphManager::addPriorBias()
 {
     const auto bias_noise = gtsam::noiseModel::Diagonal::Sigmas(
@@ -169,4 +150,48 @@ void GraphManager::addPriorVelocity()
         current_velocity_key_,
         current_velocity_estimate_
     );
+}
+
+void GraphManager::addImuFactor()
+{
+    const gtsam::Key pose_i = current_pose_key_;
+    const gtsam::Key vel_i = current_velocity_key_;
+    const gtsam::Key bias_i = current_bias_key_;
+
+    const gtsam::Key pose_j = gtsam::Symbol('x', frame_index_ + 1);
+    const gtsam::Key vel_j = gtsam::Symbol('v', frame_index_ + 1);
+    const gtsam::Key bias_j = gtsam::Symbol('b', frame_index_ + 1);
+
+    graph_.add(gtsam::CombinedImuFactor(
+        pose_i,
+        vel_i,
+        pose_j,
+        vel_j,
+        bias_i,
+        bias_j,
+        imu_manager_.preintegratedMeasurements()
+    ));
+
+    new_values_.insert(
+        pose_j,
+        current_pose_estimate_
+    );
+
+    new_values_.insert(
+        vel_j,
+        current_velocity_estimate_
+    );
+
+    new_values_.insert(
+        bias_j,
+        imu_manager_.currentBias()
+    );
+
+    current_pose_key_ = pose_j;
+    current_velocity_key_ = vel_j;
+    current_bias_key_ = bias_j;
+
+    frame_index_++;
+
+    imu_manager_.resetIntegration();
 }

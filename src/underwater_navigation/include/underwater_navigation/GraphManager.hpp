@@ -16,7 +16,6 @@ public:
 
     void addPriorPose();
     void addBetweenPose();
-    void addPriorPose();
     void addPriorVelocity();
     void addPriorBias();
     void optimize();
@@ -26,7 +25,7 @@ public:
         const gtsam::Vector3& gyro,
         double dt
     );
-
+    void addImuFactor();
     void printImuPreintegration() const;
 
     const gtsam::imuBias::ConstantBias& currentBias() const;

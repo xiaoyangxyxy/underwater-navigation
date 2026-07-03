@@ -16,7 +16,22 @@ GraphManager graph_manager;
   graph_manager.addPriorVelocity();
 
   graph_manager.addPriorBias();
+
+  for (int i = 0; i < 100; ++i)
+  {
+      graph_manager.addImuMeasurement(
+          gtsam::Vector3(1.0, 0.0, 0.0),
+          gtsam::Vector3(0.0, 0.0, 0.0),
+          0.01
+      );
+  }
+
+  graph_manager.printImuPreintegration();
+
+  graph_manager.addImuFactor();
+
   graph_manager.optimize();
+
 
 std::cout << "Graph optimization finished." << std::endl;
 

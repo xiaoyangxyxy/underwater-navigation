@@ -32,6 +32,11 @@ void ImuFactorManager::addMeasurement(
     preintegrator_->integrateMeasurement(acc, gyro, dt);
 }
 
+void ImuFactorManager::resetIntegration()
+{
+    preintegrator_->resetIntegration();
+}
+
 void ImuFactorManager::printPreintegration() const
 {
     std::cout << "IMU preintegration result:" << std::endl;
