@@ -56,3 +56,9 @@ const gtsam::imuBias::ConstantBias& ImuFactorManager::currentBias() const
 {
     return current_bias_;
 }
+
+const gtsam::PreintegratedCombinedMeasurements&
+ImuFactorManager::preintegratedMeasurements() const
+{
+    return *preintegrator_;
+}

@@ -11,9 +11,12 @@ int main(int argc, char **argv)
 
 GraphManager graph_manager;
 
-graph_manager.addPriorNavState();
-graph_manager.addPriorBias();
-graph_manager.optimize();
+  graph_manager.addPriorPose();
+
+  graph_manager.addPriorVelocity();
+
+  graph_manager.addPriorBias();
+  graph_manager.optimize();
 
 std::cout << "Graph optimization finished." << std::endl;
 

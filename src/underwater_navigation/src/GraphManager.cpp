@@ -21,6 +21,7 @@ GraphManager::GraphManager()
     frame_index_ = 0;
 
     current_pose_key_ = gtsam::Symbol('x', 0);
+    current_velocity_key_ = gtsam::Symbol('v',0);
     current_bias_key_ = gtsam::Symbol('b', 0);
 
     current_pose_estimate_ = gtsam::Pose3::Identity();
@@ -29,6 +30,7 @@ GraphManager::GraphManager()
         gtsam::Pose3::Identity(),
         gtsam::Vector3::Zero()
     );
+    current_velocity_estimate_ = gtsam::Vector3::Zero();
 }
 void GraphManager::addPriorPose()
 {
@@ -145,5 +147,26 @@ void GraphManager::addPriorBias()
     new_values_.insert(
         current_bias_key_,
         imu_manager_.currentBias()
+    );
+}
+
+void GraphManager::addPriorVelocity()
+{
+    const auto velocity_noise =
+        gtsam::noiseModel::Diagonal::Sigmas(
+            gtsam::Vector3(0.01,0.01,0.01)
+        );
+
+    graph_.add(
+        gtsam::PriorFactor<gtsam::Vector3>(
+            current_velocity_key_,
+            current_velocity_estimate_,
+            velocity_noise
+        )
+    );
+
+    new_values_.insert(
+        current_velocity_key_,
+        current_velocity_estimate_
     );
 }

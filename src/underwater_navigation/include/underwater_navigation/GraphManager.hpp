@@ -16,7 +16,8 @@ public:
 
     void addPriorPose();
     void addBetweenPose();
-    void addPriorNavState();
+    void addPriorPose();
+    void addPriorVelocity();
     void addPriorBias();
     void optimize();
 
@@ -39,6 +40,8 @@ private:
     gtsam::ISAM2 isam2_;
 
     gtsam::Key current_pose_key_;
+    gtsam::Key current_velocity_key_;
+    gtsam::Vector3 current_velocity_estimate_;
     gtsam::Key current_bias_key_;
 
     size_t frame_index_;
