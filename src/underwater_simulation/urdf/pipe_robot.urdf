@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot name="pipe_robot">
+  <link name="base_link"/>
+  <link name="robot_visual_link">
+    <visual name="bluerov_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://underwater_simulation/models/pipe_robot/meshes/bluerov2_noprop.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="camera_left_link"/>
+  <link name="camera_right_link"/>
+  <link name="imu_link"/>
+  <link name="mag_link"/>
+  <link name="depth_link"/>
+  <link name="dvl_link"/>
+  <link name="sonar_up_link"/>
+  <link name="sonar_down_link"/>
+  <link name="sonar_left_link"/>
+  <link name="sonar_right_link"/>
+
+  <joint name="robot_visual_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="robot_visual_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="camera_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_left_link"/>
+    <origin xyz="0.4 0.06022 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="camera_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_right_link"/>
+    <origin xyz="0.4 -0.06022 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="mag_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="mag_link"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="depth_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="depth_link"/>
+    <origin xyz="-0.45 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="dvl_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="dvl_link"/>
+    <origin xyz="0 0 -0.18" rpy="0 1.57079632679 0"/>
+  </joint>
+
+  <joint name="sonar_up_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sonar_up_link"/>
+    <origin xyz="0 0 0" rpy="0 -1.57079632679 0"/>
+  </joint>
+
+  <joint name="sonar_down_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sonar_down_link"/>
+    <origin xyz="0 0 0" rpy="0 1.57079632679 0"/>
+  </joint>
+
+  <joint name="sonar_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sonar_left_link"/>
+    <origin xyz="0 0 0" rpy="0 0 1.57079632679"/>
+  </joint>
+
+  <joint name="sonar_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sonar_right_link"/>
+    <origin xyz="0 0 0" rpy="0 0 -1.57079632679"/>
+  </joint>
+
+</robot>

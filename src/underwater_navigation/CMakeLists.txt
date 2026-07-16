@@ -12,6 +12,8 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(rosgraph_msgs REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(GTSAM REQUIRED)
@@ -32,11 +34,37 @@ add_executable(navigation_node
   src/main.cpp
   src/GraphManager.cpp
   src/imu/ImuFactorManager.cpp
+  src/imu_subscriber.cpp
 )
 
+add_executable(robot_driver_node
+  src/robot_driver_node.cpp
+)
+
+add_executable(simulation_sensor_node
+  src/simulation_sensor_node.cpp
+)
+
+add_executable(simulation_motion_node
+  src/simulation_motion_node.cpp
+)
+
+add_executable(slam_debug_recorder_node
+  src/slam_debug_recorder_node.cpp
+)
+
+foreach(target
+  navigation_node
+  simulation_sensor_node
+  simulation_motion_node)
+  target_include_directories(${target} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
+endforeach()
+
 target_include_directories(navigation_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
+  ${GTSAM_INCLUDE_DIRS}
 )
 
 ament_target_dependencies(navigation_node
@@ -53,7 +81,51 @@ target_link_libraries(navigation_node
   gtsam
 )
 
-install(TARGETS navigation_node
+ament_target_dependencies(robot_driver_node
+  rclcpp
+  sensor_msgs
+)
+
+ament_target_dependencies(simulation_sensor_node
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+  rosgraph_msgs
+)
+
+ament_target_dependencies(simulation_motion_node
+  rclcpp
+  geometry_msgs
+  nav_msgs
+  rosgraph_msgs
+  gazebo_msgs
+)
+
+target_compile_features(slam_debug_recorder_node PUBLIC cxx_std_17)
+
+ament_target_dependencies(slam_debug_recorder_node
+  rclcpp
+  std_msgs
+)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY include/
+  DESTINATION include
+)
+
+install(TARGETS
+  navigation_node
+  robot_driver_node
+  simulation_sensor_node
+  simulation_motion_node
+  slam_debug_recorder_node
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()

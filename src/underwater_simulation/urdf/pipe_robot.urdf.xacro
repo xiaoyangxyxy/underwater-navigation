@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pipe_robot">
+  <xacro:property name="body_length" value="1.0"/>
+  <xacro:property name="body_radius" value="0.125"/>
+
+  <xacro:arg name="mesh_filename" default="package://underwater_simulation/models/pipe_robot/meshes/bluerov2_noprop.dae"/>
+  <xacro:arg name="mesh_scale" default="1 1 1"/>
+  <xacro:arg name="mesh_xyz" default="0 0 0"/>
+  <xacro:arg name="mesh_rpy" default="0 0 0"/>
+
+  <material name="body_dark_gray"><color rgba="0.24 0.24 0.24 1"/></material>
+  <material name="front_cyan"><color rgba="0.10 1.00 1.00 1"/></material>
+  <material name="camera_black"><color rgba="0.04 0.04 0.04 1"/></material>
+  <material name="camera_lens"><color rgba="0.08 0.16 0.22 1"/></material>
+  <material name="imu_mag_yellow"><color rgba="1.00 0.90 0.10 1"/></material>
+  <material name="dvl_blue"><color rgba="0.08 0.55 1.00 1"/></material>
+  <material name="depth_green"><color rgba="0.10 1.00 0.35 1"/></material>
+  <material name="sonar_purple"><color rgba="0.95 0.20 1.00 1"/></material>
+  <material name="sonar_red"><color rgba="1.00 0.20 0.35 1"/></material>
+
+  <link name="base_link">
+    <collision name="body_collision">
+      <origin xyz="0 0 0" rpy="0 1.57079632679 0"/>
+      <geometry>
+        <cylinder radius="${body_radius}" length="${body_length}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="12.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.025" ixy="0" ixz="0" iyy="1.02" iyz="0" izz="1.02"/>
+    </inertial>
+  </link>
+
+  <link name="robot_visual_link">
+    <visual name="rov_visual_mesh">
+      <origin xyz="$(arg mesh_xyz)" rpy="$(arg mesh_rpy)"/>
+      <geometry>
+        <mesh filename="$(arg mesh_filename)" scale="$(arg mesh_scale)"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="robot_visual_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="robot_visual_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:macro name="stereo_camera" params="name xyz">
+    <link name="${name}">
+      <visual name="${name}_body_visual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.055 0.035 0.035"/></geometry>
+        <material name="camera_black"/>
+      </visual>
+      <visual name="${name}_lens_visual">
+        <origin xyz="0.032 0 0" rpy="0 1.57079632679 0"/>
+        <geometry><cylinder radius="0.013" length="0.012"/></geometry>
+        <material name="camera_lens"/>
+      </visual>
+    </link>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="fixed_box_sensor" params="name xyz rpy size material visual_xyz">
+    <link name="${name}">
+      <visual name="${name}_visual">
+        <origin xyz="${visual_xyz}" rpy="0 0 0"/>
+        <geometry><box size="${size}"/></geometry>
+        <material name="${material}"/>
+      </visual>
+    </link>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="fixed_cylinder_sensor" params="name xyz rpy radius length material visual_xyz visual_rpy">
+    <link name="${name}">
+      <visual name="${name}_visual">
+        <origin xyz="${visual_xyz}" rpy="${visual_rpy}"/>
+        <geometry><cylinder radius="${radius}" length="${length}"/></geometry>
+        <material name="${material}"/>
+      </visual>
+    </link>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Original Aqua/BlueROV config uses Tbc xyz=(0.4, 0, 0.1) and bf/fx ~= 0.12045 m. -->
+  <xacro:stereo_camera name="camera_left_link" xyz="0.4 0.06022 0.1"/>
+  <xacro:stereo_camera name="camera_right_link" xyz="0.4 -0.06022 0.1"/>
+
+  <!-- Operational simulation frames stay on the previously validated fusion convention. -->
+  <xacro:fixed_box_sensor name="imu_link" xyz="0 0 0.08" rpy="0 0 0" size="0.07 0.04 0.035" material="imu_mag_yellow" visual_xyz="0 0.035 0.055"/>
+  <xacro:fixed_box_sensor name="mag_link" xyz="0 0 0.08" rpy="0 0 0" size="0.06 0.035 0.035" material="imu_mag_yellow" visual_xyz="0 -0.035 0.055"/>
+
+  <!-- DVL local +X axis points toward robot -Z; DVL velocity messages remain in base_link/body frame. -->
+  <xacro:fixed_box_sensor name="dvl_link" xyz="0 0 -0.18" rpy="0 1.57079632679 0" size="0.09 0.11 0.045" material="dvl_blue" visual_xyz="0 0 0"/>
+
+  <!-- Depth sensor is mounted at the tail. -->
+  <xacro:fixed_cylinder_sensor name="depth_link" xyz="-0.45 0 0" rpy="0 0 0" radius="0.035" length="0.06" material="depth_green" visual_xyz="-0.035 0 0" visual_rpy="0 1.57079632679 0"/>
+
+  <!-- Ranging sonar local +X axes point in the named directions. -->
+  <xacro:fixed_cylinder_sensor name="sonar_up_link" xyz="0 0 0" rpy="0 -1.57079632679 0" radius="0.025" length="0.10" material="sonar_purple" visual_xyz="0.13 0 0" visual_rpy="0 1.57079632679 0"/>
+  <xacro:fixed_cylinder_sensor name="sonar_down_link" xyz="0 0 0" rpy="0 1.57079632679 0" radius="0.025" length="0.10" material="sonar_purple" visual_xyz="0.13 0 0" visual_rpy="0 1.57079632679 0"/>
+  <xacro:fixed_cylinder_sensor name="sonar_left_link" xyz="0 0 0" rpy="0 0 1.57079632679" radius="0.025" length="0.10" material="sonar_red" visual_xyz="0.13 0 0" visual_rpy="0 1.57079632679 0"/>
+  <xacro:fixed_cylinder_sensor name="sonar_right_link" xyz="0 0 0" rpy="0 0 -1.57079632679" radius="0.025" length="0.10" material="sonar_red" visual_xyz="0.13 0 0" visual_rpy="0 1.57079632679 0"/>
+
+</robot>

@@ -2,6 +2,8 @@
 
 #include <gtsam/navigation/CombinedImuFactor.h>
 #include <gtsam/navigation/ImuBias.h>
+#include <gtsam/navigation/NavState.h>
+
 
 #include <memory>
 
@@ -20,6 +22,11 @@ public:
     void printPreintegration() const;
 
     void resetIntegration();
+    void resetIntegrationAndSetBias(
+        const gtsam::imuBias::ConstantBias& bias
+    );
+
+    gtsam::NavState predict(const gtsam::NavState& state) const;
 
     const gtsam::imuBias::ConstantBias& currentBias() const;
 

@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="pipe_robot">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <link name="base_link">
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>false</gravity>
+      <inertial>
+        <mass>12.0</mass>
+        <inertia>
+          <ixx>0.025</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1.02</iyy><iyz>0</iyz>
+          <izz>1.02</izz>
+        </inertia>
+      </inertial>
+      <collision name="body_collision">
+        <pose>0 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.125</radius><length>1.0</length></cylinder></geometry>
+      </collision>
+    </link>
+
+    <link name="robot_visual_link">
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>false</gravity>
+      <visual name="rov_visual_mesh">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://pipe_robot/meshes/bluerov2_noprop.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="robot_visual_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>robot_visual_link</child>
+    </joint>
+
+    <link name="camera_left_link">
+      <!-- Approximate original Aqua/BlueROV stereo camera mount: Tbc xyz plus half stereo baseline. -->
+      <pose>0.4 0.06022 0.1 0 0 0</pose>
+      <visual name="camera_left_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry><box><size>0.055 0.035 0.035</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.04 0.04 0.04 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="camera_left_lens_visual">
+        <pose>0.032 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.013</radius><length>0.012</length></cylinder></geometry>
+        <material><ambient>0.05 0.10 0.14 1</ambient><diffuse>0.08 0.16 0.22 1</diffuse><emissive>0.00 0.01 0.02 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="camera_left_joint" type="fixed"><parent>base_link</parent><child>camera_left_link</child></joint>
+
+    <link name="camera_right_link">
+      <!-- Stereo baseline ~= Camera.bf / Camera.fx = 78.8916589 / 655 = 0.12045 m. -->
+      <pose>0.4 -0.06022 0.1 0 0 0</pose>
+      <visual name="camera_right_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry><box><size>0.055 0.035 0.035</size></box></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.04 0.04 0.04 1</diffuse><specular>0.2 0.2 0.2 1</specular></material>
+      </visual>
+      <visual name="camera_right_lens_visual">
+        <pose>0.032 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.013</radius><length>0.012</length></cylinder></geometry>
+        <material><ambient>0.05 0.10 0.14 1</ambient><diffuse>0.08 0.16 0.22 1</diffuse><emissive>0.00 0.01 0.02 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="camera_right_joint" type="fixed"><parent>base_link</parent><child>camera_right_link</child></joint>
+
+    <link name="imu_link">
+      <!-- Keep the operational IMU frame on the previously validated simulation convention. -->
+      <pose>0 0 0.08 0 0 0</pose>
+      <visual name="imu_visual">
+        <pose>0 0.035 0.055 0 0 0</pose>
+        <geometry><box><size>0.07 0.04 0.035</size></box></geometry>
+        <material><ambient>1.0 0.85 0.05 1</ambient><diffuse>1.0 0.92 0.10 1</diffuse><emissive>0.12 0.08 0.00 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="imu_joint" type="fixed"><parent>base_link</parent><child>imu_link</child></joint>
+
+    <link name="mag_link">
+      <pose>0 0 0.08 0 0 0</pose>
+      <visual name="mag_visual">
+        <pose>0 -0.035 0.055 0 0 0</pose>
+        <geometry><box><size>0.06 0.035 0.035</size></box></geometry>
+        <material><ambient>1.0 0.75 0.05 1</ambient><diffuse>1.0 0.82 0.08 1</diffuse><emissive>0.10 0.06 0.00 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="mag_joint" type="fixed"><parent>base_link</parent><child>mag_link</child></joint>
+
+    <link name="depth_link">
+      <pose>-0.45 0 0 0 0 0</pose>
+      <visual name="depth_visual">
+        <pose>-0.035 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.035</radius><length>0.06</length></cylinder></geometry>
+        <material><ambient>0.05 0.85 0.25 1</ambient><diffuse>0.10 1.00 0.35 1</diffuse><emissive>0.00 0.12 0.02 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="depth_joint" type="fixed"><parent>base_link</parent><child>depth_link</child></joint>
+
+    <link name="dvl_link">
+      <!-- DVL local +X axis points toward robot -Z; DVL velocity messages remain in base_link/body frame. -->
+      <pose>0 0 -0.18 0 1.57079632679 0</pose>
+      <visual name="dvl_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry><box><size>0.09 0.11 0.045</size></box></geometry>
+        <material><ambient>0.05 0.40 1.00 1</ambient><diffuse>0.08 0.55 1.00 1</diffuse><emissive>0.00 0.04 0.18 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="dvl_joint" type="fixed"><parent>base_link</parent><child>dvl_link</child></joint>
+
+    <link name="sonar_up_link">
+      <!-- Sonar local +X axis points toward robot +Z. -->
+      <pose>0 0 0 0 -1.57079632679 0</pose>
+      <visual name="sonar_up_visual">
+        <pose>0.13 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.025</radius><length>0.10</length></cylinder></geometry>
+        <material><ambient>0.80 0.10 1.00 1</ambient><diffuse>0.95 0.20 1.00 1</diffuse><emissive>0.08 0.00 0.12 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="sonar_up_joint" type="fixed"><parent>base_link</parent><child>sonar_up_link</child></joint>
+
+    <link name="sonar_down_link">
+      <!-- Sonar local +X axis points toward robot -Z. -->
+      <pose>0 0 0 0 1.57079632679 0</pose>
+      <visual name="sonar_down_visual">
+        <pose>0.13 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.025</radius><length>0.10</length></cylinder></geometry>
+        <material><ambient>0.80 0.10 1.00 1</ambient><diffuse>0.95 0.20 1.00 1</diffuse><emissive>0.08 0.00 0.12 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="sonar_down_joint" type="fixed"><parent>base_link</parent><child>sonar_down_link</child></joint>
+
+    <link name="sonar_left_link">
+      <!-- Sonar local +X axis points toward robot +Y. -->
+      <pose>0 0 0 0 0 1.57079632679</pose>
+      <visual name="sonar_left_visual">
+        <pose>0.13 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.025</radius><length>0.10</length></cylinder></geometry>
+        <material><ambient>1.00 0.10 0.25 1</ambient><diffuse>1.00 0.20 0.35 1</diffuse><emissive>0.12 0.00 0.02 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="sonar_left_joint" type="fixed"><parent>base_link</parent><child>sonar_left_link</child></joint>
+
+    <link name="sonar_right_link">
+      <!-- Sonar local +X axis points toward robot -Y. -->
+      <pose>0 0 0 0 0 -1.57079632679</pose>
+      <visual name="sonar_right_visual">
+        <pose>0.13 0 0 0 1.57079632679 0</pose>
+        <geometry><cylinder><radius>0.025</radius><length>0.10</length></cylinder></geometry>
+        <material><ambient>1.00 0.10 0.25 1</ambient><diffuse>1.00 0.20 0.35 1</diffuse><emissive>0.12 0.00 0.02 1</emissive></material>
+      </visual>
+    </link>
+    <joint name="sonar_right_joint" type="fixed"><parent>base_link</parent><child>sonar_right_link</child></joint>
+
+  </model>
+</sdf>

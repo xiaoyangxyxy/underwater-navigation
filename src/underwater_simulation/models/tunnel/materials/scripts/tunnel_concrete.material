@@ -1,0 +1,19 @@
+material Tunnel/Concrete
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.30 0.30 0.28 1.0
+      diffuse 0.55 0.54 0.49 1.0
+      specular 0.04 0.04 0.04 1.0 4.0
+
+      texture_unit
+      {
+        texture sidewalk.jpg
+        filtering trilinear
+        scale 0.25 0.25
+      }
+    }
+  }
+}

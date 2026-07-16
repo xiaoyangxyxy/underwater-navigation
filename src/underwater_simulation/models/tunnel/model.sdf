@@ -1,0 +1,2003 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="tunnel">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="tunnel_wall_segments">
+      <pose>0 0 0 0 0 0</pose>
+      <!-- 64 box segments: length=30.0 m, inner_diameter=5.0 m, wall_thickness=0.3 m. -->
+      <collision name="wall_00_collision">
+        <pose>0 2.650000 0.000000 -1.570796 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_00_visual">
+        <pose>0 2.650000 0.000000 -1.570796 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_01_collision">
+        <pose>0 2.637240 0.259745 -1.472622 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_01_visual">
+        <pose>0 2.637240 0.259745 -1.472622 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_02_collision">
+        <pose>0 2.599081 0.516989 -1.374447 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_02_visual">
+        <pose>0 2.599081 0.516989 -1.374447 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_03_collision">
+        <pose>0 2.535892 0.769254 -1.276272 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_03_visual">
+        <pose>0 2.535892 0.769254 -1.276272 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_04_collision">
+        <pose>0 2.448281 1.014111 -1.178097 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_04_visual">
+        <pose>0 2.448281 1.014111 -1.178097 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_05_collision">
+        <pose>0 2.337091 1.249201 -1.079922 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_05_visual">
+        <pose>0 2.337091 1.249201 -1.079922 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_06_collision">
+        <pose>0 2.203394 1.472261 -0.981748 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_06_visual">
+        <pose>0 2.203394 1.472261 -0.981748 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_07_collision">
+        <pose>0 2.048478 1.681142 -0.883573 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_07_visual">
+        <pose>0 2.048478 1.681142 -0.883573 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_08_collision">
+        <pose>0 1.873833 1.873833 -0.785398 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_08_visual">
+        <pose>0 1.873833 1.873833 -0.785398 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_09_collision">
+        <pose>0 1.681142 2.048478 -0.687223 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_09_visual">
+        <pose>0 1.681142 2.048478 -0.687223 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_10_collision">
+        <pose>0 1.472261 2.203394 -0.589049 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_10_visual">
+        <pose>0 1.472261 2.203394 -0.589049 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_11_collision">
+        <pose>0 1.249201 2.337091 -0.490874 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_11_visual">
+        <pose>0 1.249201 2.337091 -0.490874 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_12_collision">
+        <pose>0 1.014111 2.448281 -0.392699 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_12_visual">
+        <pose>0 1.014111 2.448281 -0.392699 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_13_collision">
+        <pose>0 0.769254 2.535892 -0.294524 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_13_visual">
+        <pose>0 0.769254 2.535892 -0.294524 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_14_collision">
+        <pose>0 0.516989 2.599081 -0.196350 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_14_visual">
+        <pose>0 0.516989 2.599081 -0.196350 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_15_collision">
+        <pose>0 0.259745 2.637240 -0.098175 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_15_visual">
+        <pose>0 0.259745 2.637240 -0.098175 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_16_collision">
+        <pose>0 0.000000 2.650000 0.000000 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_16_visual">
+        <pose>0 0.000000 2.650000 0.000000 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_17_collision">
+        <pose>0 -0.259745 2.637240 0.098175 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_17_visual">
+        <pose>0 -0.259745 2.637240 0.098175 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_18_collision">
+        <pose>0 -0.516989 2.599081 0.196350 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_18_visual">
+        <pose>0 -0.516989 2.599081 0.196350 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_19_collision">
+        <pose>0 -0.769254 2.535892 0.294524 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_19_visual">
+        <pose>0 -0.769254 2.535892 0.294524 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_20_collision">
+        <pose>0 -1.014111 2.448281 0.392699 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_20_visual">
+        <pose>0 -1.014111 2.448281 0.392699 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_21_collision">
+        <pose>0 -1.249201 2.337091 0.490874 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_21_visual">
+        <pose>0 -1.249201 2.337091 0.490874 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_22_collision">
+        <pose>0 -1.472261 2.203394 0.589049 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_22_visual">
+        <pose>0 -1.472261 2.203394 0.589049 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_23_collision">
+        <pose>0 -1.681142 2.048478 0.687223 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_23_visual">
+        <pose>0 -1.681142 2.048478 0.687223 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_24_collision">
+        <pose>0 -1.873833 1.873833 0.785398 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_24_visual">
+        <pose>0 -1.873833 1.873833 0.785398 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_25_collision">
+        <pose>0 -2.048478 1.681142 0.883573 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_25_visual">
+        <pose>0 -2.048478 1.681142 0.883573 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_26_collision">
+        <pose>0 -2.203394 1.472261 0.981748 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_26_visual">
+        <pose>0 -2.203394 1.472261 0.981748 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_27_collision">
+        <pose>0 -2.337091 1.249201 1.079922 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_27_visual">
+        <pose>0 -2.337091 1.249201 1.079922 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_28_collision">
+        <pose>0 -2.448281 1.014111 1.178097 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_28_visual">
+        <pose>0 -2.448281 1.014111 1.178097 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_29_collision">
+        <pose>0 -2.535892 0.769254 1.276272 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_29_visual">
+        <pose>0 -2.535892 0.769254 1.276272 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_30_collision">
+        <pose>0 -2.599081 0.516989 1.374447 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_30_visual">
+        <pose>0 -2.599081 0.516989 1.374447 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_31_collision">
+        <pose>0 -2.637240 0.259745 1.472622 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_31_visual">
+        <pose>0 -2.637240 0.259745 1.472622 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_32_collision">
+        <pose>0 -2.650000 0.000000 1.570796 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_32_visual">
+        <pose>0 -2.650000 0.000000 1.570796 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_33_collision">
+        <pose>0 -2.637240 -0.259745 1.668971 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_33_visual">
+        <pose>0 -2.637240 -0.259745 1.668971 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_34_collision">
+        <pose>0 -2.599081 -0.516989 1.767146 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_34_visual">
+        <pose>0 -2.599081 -0.516989 1.767146 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_35_collision">
+        <pose>0 -2.535892 -0.769254 1.865321 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_35_visual">
+        <pose>0 -2.535892 -0.769254 1.865321 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_36_collision">
+        <pose>0 -2.448281 -1.014111 1.963495 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_36_visual">
+        <pose>0 -2.448281 -1.014111 1.963495 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_37_collision">
+        <pose>0 -2.337091 -1.249201 2.061670 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_37_visual">
+        <pose>0 -2.337091 -1.249201 2.061670 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_38_collision">
+        <pose>0 -2.203394 -1.472261 2.159845 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_38_visual">
+        <pose>0 -2.203394 -1.472261 2.159845 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_39_collision">
+        <pose>0 -2.048478 -1.681142 2.258020 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_39_visual">
+        <pose>0 -2.048478 -1.681142 2.258020 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_40_collision">
+        <pose>0 -1.873833 -1.873833 2.356194 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_40_visual">
+        <pose>0 -1.873833 -1.873833 2.356194 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_41_collision">
+        <pose>0 -1.681142 -2.048478 2.454369 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_41_visual">
+        <pose>0 -1.681142 -2.048478 2.454369 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_42_collision">
+        <pose>0 -1.472261 -2.203394 2.552544 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_42_visual">
+        <pose>0 -1.472261 -2.203394 2.552544 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_43_collision">
+        <pose>0 -1.249201 -2.337091 2.650719 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_43_visual">
+        <pose>0 -1.249201 -2.337091 2.650719 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_44_collision">
+        <pose>0 -1.014111 -2.448281 2.748894 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_44_visual">
+        <pose>0 -1.014111 -2.448281 2.748894 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_45_collision">
+        <pose>0 -0.769254 -2.535892 2.847068 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_45_visual">
+        <pose>0 -0.769254 -2.535892 2.847068 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_46_collision">
+        <pose>0 -0.516989 -2.599081 2.945243 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_46_visual">
+        <pose>0 -0.516989 -2.599081 2.945243 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_47_collision">
+        <pose>0 -0.259745 -2.637240 3.043418 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_47_visual">
+        <pose>0 -0.259745 -2.637240 3.043418 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_48_collision">
+        <pose>0 -0.000000 -2.650000 3.141593 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_48_visual">
+        <pose>0 -0.000000 -2.650000 3.141593 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_49_collision">
+        <pose>0 0.259745 -2.637240 3.239767 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_49_visual">
+        <pose>0 0.259745 -2.637240 3.239767 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_50_collision">
+        <pose>0 0.516989 -2.599081 3.337942 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_50_visual">
+        <pose>0 0.516989 -2.599081 3.337942 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_51_collision">
+        <pose>0 0.769254 -2.535892 3.436117 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_51_visual">
+        <pose>0 0.769254 -2.535892 3.436117 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_52_collision">
+        <pose>0 1.014111 -2.448281 3.534292 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_52_visual">
+        <pose>0 1.014111 -2.448281 3.534292 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_53_collision">
+        <pose>0 1.249201 -2.337091 3.632467 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_53_visual">
+        <pose>0 1.249201 -2.337091 3.632467 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_54_collision">
+        <pose>0 1.472261 -2.203394 3.730641 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_54_visual">
+        <pose>0 1.472261 -2.203394 3.730641 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_55_collision">
+        <pose>0 1.681142 -2.048478 3.828816 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_55_visual">
+        <pose>0 1.681142 -2.048478 3.828816 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_56_collision">
+        <pose>0 1.873833 -1.873833 3.926991 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_56_visual">
+        <pose>0 1.873833 -1.873833 3.926991 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_57_collision">
+        <pose>0 2.048478 -1.681142 4.025166 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_57_visual">
+        <pose>0 2.048478 -1.681142 4.025166 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_58_collision">
+        <pose>0 2.203394 -1.472261 4.123340 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_58_visual">
+        <pose>0 2.203394 -1.472261 4.123340 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_59_collision">
+        <pose>0 2.337091 -1.249201 4.221515 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_59_visual">
+        <pose>0 2.337091 -1.249201 4.221515 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_60_collision">
+        <pose>0 2.448281 -1.014111 4.319690 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_60_visual">
+        <pose>0 2.448281 -1.014111 4.319690 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_61_collision">
+        <pose>0 2.535892 -0.769254 4.417865 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_61_visual">
+        <pose>0 2.535892 -0.769254 4.417865 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_62_collision">
+        <pose>0 2.599081 -0.516989 4.516039 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_62_visual">
+        <pose>0 2.599081 -0.516989 4.516039 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <collision name="wall_63_collision">
+        <pose>0 2.637240 -0.259745 4.614214 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0xFFFF</collide_bitmask>
+          </contact>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="wall_63_visual">
+        <pose>0 2.637240 -0.259745 4.614214 0 0</pose>
+        <geometry>
+          <box><size>30.000000 0.275110 0.300000</size></box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tunnel/materials/scripts</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Tunnel/Concrete</name>
+          </script>
+          <ambient>0.33 0.32 0.29 1</ambient>
+          <diffuse>0.55 0.54 0.49 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+        </material>
+      </visual>
+      <visual name="lamp_01_visual">
+        <pose>-12.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+      <visual name="lamp_02_visual">
+        <pose>-7.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+      <visual name="lamp_03_visual">
+        <pose>-2.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+      <visual name="lamp_04_visual">
+        <pose>2.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+      <visual name="lamp_05_visual">
+        <pose>7.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+      <visual name="lamp_06_visual">
+        <pose>12.500000 0 2.340000 0 0 0</pose>
+        <geometry>
+          <box><size>0.55 0.22 0.08</size></box>
+        </geometry>
+        <material>
+          <ambient>0.95 0.88 0.68 1</ambient>
+          <diffuse>1.00 0.92 0.72 1</diffuse>
+          <specular>0.15 0.12 0.08 1</specular>
+          <emissive>0.80 0.72 0.52 1</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

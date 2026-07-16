@@ -1,0 +1,23 @@
+newmtl hull_gray
+Ka 0.18 0.18 0.18
+Kd 0.28 0.30 0.32
+Ks 0.12 0.12 0.12
+Ns 20
+
+newmtl frame_yellow
+Ka 0.65 0.48 0.05
+Kd 0.95 0.72 0.08
+Ks 0.20 0.18 0.08
+Ns 30
+
+newmtl nose_cyan
+Ka 0.02 0.55 0.65
+Kd 0.06 0.85 0.95
+Ks 0.25 0.25 0.25
+Ns 40
+
+newmtl dark_panel
+Ka 0.05 0.05 0.055
+Kd 0.08 0.085 0.09
+Ks 0.10 0.10 0.10
+Ns 15

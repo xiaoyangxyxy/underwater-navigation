@@ -2,6 +2,8 @@
 build/
 install/
 log/
+.ros_logs/
+slam_logs/
 
 # IDE
 .vscode/
@@ -30,3 +32,6 @@ __pycache__/
 # ROS Bag
 *.db3
 *.mcap
+
+# External reference workspace; keep it separate from this navigation project.
+src/robot/
