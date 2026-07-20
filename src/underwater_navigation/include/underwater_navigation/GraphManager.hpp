@@ -6,7 +6,9 @@
 #include <gtsam/geometry/Pose3.h>
 #include <gtsam/navigation/NavState.h>
 
+#include <array>
 #include <deque>
+#include <string>
 
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/path.hpp>
@@ -35,6 +37,22 @@ public:
     {
         rclcpp::Time stamp;
         gtsam::Vector3 velocity_body;
+    };
+
+    struct TimedMagMeasurement
+    {
+        rclcpp::Time stamp;
+        gtsam::Vector3 magnetic_field;
+    };
+
+    struct TimedSonarMeasurement
+    {
+        rclcpp::Time stamp;
+        double range;
+        gtsam::Vector3 offset_body;
+        gtsam::Vector3 direction_body;
+        std::string name;
+        bool valid;
     };
 
     struct ImuWindowKeys
@@ -68,6 +86,8 @@ public:
         std::deque<TimedImuMeasurement>& imu_buffer,
         std::deque<TimedDepthMeasurement>& depth_buffer,
         std::deque<TimedDvlMeasurement>& dvl_buffer,
+        std::deque<TimedMagMeasurement>& mag_buffer,
+        std::deque<TimedSonarMeasurement>& sonar_buffer,
         rclcpp::Time& last_processed_imu_stamp
     );
 
@@ -112,11 +132,23 @@ private:
     double dvl_match_max_dt_;
     bool dvl_displacement_factor_enabled_;
     double dvl_displacement_sigma_;
+    bool mag_factor_enabled_;
+    double mag_match_max_dt_;
+    double mag_yaw_noise_sigma_;
+    double mag_yaw_offset_;
+    bool mag_use_robust_loss_;
+    bool sonar_factor_enabled_;
+    double sonar_match_max_dt_;
+    double sonar_range_noise_sigma_;
+    bool sonar_use_robust_loss_;
+    double pipe_radius_;
     bool debug_attitude_prior_enabled_;
     double debug_attitude_prior_sigma_;
     bool has_depth_measurement_;
     bool has_ground_truth_;
+    bool has_ground_truth_yaw_;
     gtsam::Point3 latest_ground_truth_position_;
+    double latest_ground_truth_yaw_;
     rclcpp::Time latest_ground_truth_stamp_;
 
     bool latest_dvl_matched_;
@@ -124,6 +156,21 @@ private:
     gtsam::Vector3 latest_dvl_measured_;
     gtsam::Key latest_dvl_pose_key_;
     gtsam::Key latest_dvl_velocity_key_;
+    bool latest_mag_matched_;
+    double latest_mag_time_diff_;
+    double latest_mag_yaw_measured_;
+    double latest_mag_residual_;
+    struct LatestSonarDebug
+    {
+        std::string name;
+        bool matched;
+        double time_diff;
+        double range;
+        double residual;
+        gtsam::Vector3 offset_body;
+        gtsam::Vector3 direction_body;
+    };
+    std::array<LatestSonarDebug, 4> latest_sonar_;
     rclcpp::Time latest_debug_stamp_;
 
     size_t frame_index_;

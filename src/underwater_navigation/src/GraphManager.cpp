@@ -8,6 +8,8 @@
 #include <gtsam/nonlinear/PriorFactor.h>
 #include <gtsam/slam/BetweenFactor.h>
 
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -17,6 +19,67 @@
 
 namespace
 {
+double yawFromPose(const gtsam::Pose3& pose);
+
+constexpr std::array<const char*, 4> kSonarNames = {
+    "up",
+    "down",
+    "left",
+    "right"
+};
+
+double wrapToPi(double angle)
+{
+    return std::atan2(std::sin(angle), std::cos(angle));
+}
+
+double predictPipeWallRange(
+    const gtsam::Pose3& pose,
+    const gtsam::Vector3& offset_body,
+    const gtsam::Vector3& direction_body,
+    double pipe_radius)
+{
+    const gtsam::Vector3 offset_world = pose.rotation().rotate(offset_body);
+    const gtsam::Vector3 direction_world = pose.rotation().rotate(direction_body);
+    const gtsam::Point3 position = pose.translation();
+
+    const double py = position.y() + offset_world.y();
+    const double pz = position.z() + offset_world.z();
+    const double dy = direction_world.y();
+    const double dz = direction_world.z();
+
+    const double a = dy * dy + dz * dz;
+    const double b = 2.0 * (py * dy + pz * dz);
+    const double c = py * py + pz * pz - pipe_radius * pipe_radius;
+
+    if (a < 1e-12)
+    {
+        return std::numeric_limits<double>::infinity();
+    }
+
+    const double discriminant = b * b - 4.0 * a * c;
+    if (discriminant < 0.0)
+    {
+        return std::numeric_limits<double>::infinity();
+    }
+
+    const double sqrt_discriminant = std::sqrt(discriminant);
+    const double root_1 = (-b - sqrt_discriminant) / (2.0 * a);
+    const double root_2 = (-b + sqrt_discriminant) / (2.0 * a);
+
+    double best_root = std::numeric_limits<double>::infinity();
+    if (root_1 >= 0.0)
+    {
+        best_root = root_1;
+    }
+    if (root_2 >= 0.0)
+    {
+        best_root = std::min(best_root, root_2);
+    }
+
+    return best_root;
+}
+
 class PoseZFactor : public gtsam::NoiseModelFactorN<gtsam::Pose3, double>
 {
 public:
@@ -112,6 +175,95 @@ private:
     gtsam::Vector3 measured_velocity_body_;
 };
 
+class MagYawFactor : public gtsam::NoiseModelFactor1<gtsam::Pose3>
+{
+public:
+    MagYawFactor(
+        gtsam::Key pose_key,
+        double measured_yaw,
+        const gtsam::SharedNoiseModel& noise_model)
+    : gtsam::NoiseModelFactor1<gtsam::Pose3>(noise_model, pose_key),
+      measured_yaw_(measured_yaw)
+    {
+    }
+
+    gtsam::Vector evaluateError(
+        const gtsam::Pose3& pose,
+        gtsam::OptionalMatrixType H_pose) const override
+    {
+        const auto error_function =
+            [this](const gtsam::Pose3& p) {
+                return (gtsam::Vector(1) <<
+                    wrapToPi(yawFromPose(p) - measured_yaw_)).finished();
+            };
+
+        if (H_pose)
+        {
+            *H_pose = gtsam::numericalDerivative11<gtsam::Vector, gtsam::Pose3>(
+                error_function,
+                pose);
+        }
+
+        return error_function(pose);
+    }
+
+private:
+    double measured_yaw_;
+};
+
+class SonarRangeFactor : public gtsam::NoiseModelFactor1<gtsam::Pose3>
+{
+public:
+    SonarRangeFactor(
+        gtsam::Key pose_key,
+        double measured_range,
+        double pipe_radius,
+        const gtsam::Vector3& offset_body,
+        const gtsam::Vector3& direction_body,
+        const gtsam::SharedNoiseModel& noise_model)
+    : gtsam::NoiseModelFactor1<gtsam::Pose3>(noise_model, pose_key),
+      measured_range_(measured_range),
+      pipe_radius_(pipe_radius),
+      offset_body_(offset_body),
+      direction_body_(direction_body)
+    {
+    }
+
+    gtsam::Vector evaluateError(
+        const gtsam::Pose3& pose,
+        gtsam::OptionalMatrixType H_pose) const override
+    {
+        const auto error_function =
+            [this](const gtsam::Pose3& p) {
+                const double predicted_range = predictPipeWallRange(
+                    p,
+                    offset_body_,
+                    direction_body_,
+                    pipe_radius_);
+                const double residual =
+                    std::isfinite(predicted_range)
+                        ? predicted_range - measured_range_
+                        : 10.0;
+                return (gtsam::Vector(1) << residual).finished();
+            };
+
+        if (H_pose)
+        {
+            *H_pose = gtsam::numericalDerivative11<gtsam::Vector, gtsam::Pose3>(
+                error_function,
+                pose);
+        }
+
+        return error_function(pose);
+    }
+
+private:
+    double measured_range_;
+    double pipe_radius_;
+    gtsam::Vector3 offset_body_;
+    gtsam::Vector3 direction_body_;
+};
+
 void addPoseZFactor(
     gtsam::NonlinearFactorGraph& graph,
     gtsam::Key pose_key,
@@ -155,6 +307,70 @@ void addDebugAttitudePriorFactor(
     ));
 }
 
+gtsam::SharedNoiseModel createMagYawNoiseModel(
+    double sigma,
+    bool use_robust_loss)
+{
+    const auto base_noise =
+        gtsam::noiseModel::Isotropic::Sigma(1, std::max(1e-6, sigma));
+
+    if (!use_robust_loss)
+    {
+        return base_noise;
+    }
+
+    return gtsam::noiseModel::Robust::Create(
+        gtsam::noiseModel::mEstimator::Huber::Create(1.345),
+        base_noise);
+}
+
+void addMagYawFactor(
+    gtsam::NonlinearFactorGraph& graph,
+    gtsam::Key pose_key,
+    double measured_yaw,
+    double sigma,
+    bool use_robust_loss)
+{
+    graph.add(MagYawFactor(
+        pose_key,
+        measured_yaw,
+        createMagYawNoiseModel(sigma, use_robust_loss)));
+}
+
+gtsam::SharedNoiseModel createSonarRangeNoiseModel(
+    double sigma,
+    bool use_robust_loss)
+{
+    const auto base_noise =
+        gtsam::noiseModel::Isotropic::Sigma(1, std::max(1e-6, sigma));
+
+    if (!use_robust_loss)
+    {
+        return base_noise;
+    }
+
+    return gtsam::noiseModel::Robust::Create(
+        gtsam::noiseModel::mEstimator::Huber::Create(1.345),
+        base_noise);
+}
+
+void addSonarRangeFactor(
+    gtsam::NonlinearFactorGraph& graph,
+    gtsam::Key pose_key,
+    const GraphManager::TimedSonarMeasurement& measurement,
+    double pipe_radius,
+    double sigma,
+    bool use_robust_loss)
+{
+    graph.add(SonarRangeFactor(
+        pose_key,
+        measurement.range,
+        pipe_radius,
+        measurement.offset_body,
+        measurement.direction_body,
+        createSonarRangeNoiseModel(sigma, use_robust_loss)));
+}
+
 std::string keyToString(gtsam::Key key)
 {
     const gtsam::Symbol symbol(key);
@@ -166,6 +382,16 @@ std::string keyToString(gtsam::Key key)
 double yawFromPose(const gtsam::Pose3& pose)
 {
     return pose.rotation().rpy().z();
+}
+
+double yawFromMagneticField(
+    const gtsam::Vector3& magnetic_field,
+    double yaw_offset)
+{
+    // The current simulator publishes x=cos(yaw), y=-sin(yaw).
+    // Convert that magnetic convention back to the navigation yaw sign.
+    return wrapToPi(
+        -std::atan2(magnetic_field.y(), magnetic_field.x()) + yaw_offset);
 }
 }
 
@@ -196,16 +422,43 @@ GraphManager::GraphManager(rclcpp::Node* node)
     dvl_match_max_dt_ = 0.10;
     dvl_displacement_factor_enabled_ = true;
     dvl_displacement_sigma_ = 0.05;
+    mag_factor_enabled_ = false;
+    mag_match_max_dt_ = 0.05;
+    mag_yaw_noise_sigma_ = 0.10;
+    mag_yaw_offset_ = 0.0;
+    mag_use_robust_loss_ = true;
+    sonar_factor_enabled_ = false;
+    sonar_match_max_dt_ = 0.05;
+    sonar_range_noise_sigma_ = 0.05;
+    sonar_use_robust_loss_ = true;
+    pipe_radius_ = 2.5;
     debug_attitude_prior_enabled_ = false;
     debug_attitude_prior_sigma_ = 0.02;
     has_depth_measurement_ = false;
     has_ground_truth_ = false;
+    has_ground_truth_yaw_ = false;
     latest_ground_truth_position_ = gtsam::Point3(0.0, 0.0, 0.0);
+    latest_ground_truth_yaw_ = 0.0;
     latest_dvl_matched_ = false;
     latest_dvl_time_diff_ = -1.0;
     latest_dvl_measured_ = gtsam::Vector3::Zero();
     latest_dvl_pose_key_ = current_pose_key_;
     latest_dvl_velocity_key_ = current_velocity_key_;
+    latest_mag_matched_ = false;
+    latest_mag_time_diff_ = -1.0;
+    latest_mag_yaw_measured_ = 0.0;
+    latest_mag_residual_ = 0.0;
+    for (size_t i = 0; i < latest_sonar_.size(); ++i)
+    {
+        latest_sonar_[i] = LatestSonarDebug{
+            kSonarNames[i],
+            false,
+            -1.0,
+            0.0,
+            0.0,
+            gtsam::Vector3::Zero(),
+            gtsam::Vector3::Zero()};
+    }
     latest_debug_stamp_ = rclcpp::Time(0, 0, RCL_ROS_TIME);
 
     current_nav_state_ = gtsam::NavState(
@@ -234,6 +487,36 @@ GraphManager::GraphManager(rclcpp::Node* node)
         dvl_displacement_sigma_ = node->declare_parameter<double>(
             "dvl_displacement_sigma",
             dvl_displacement_sigma_);
+        mag_factor_enabled_ = node->declare_parameter<bool>(
+            "mag_factor_enabled",
+            mag_factor_enabled_);
+        mag_match_max_dt_ = node->declare_parameter<double>(
+            "mag_match_max_dt",
+            mag_match_max_dt_);
+        mag_yaw_noise_sigma_ = node->declare_parameter<double>(
+            "mag_yaw_noise_sigma",
+            mag_yaw_noise_sigma_);
+        mag_yaw_offset_ = node->declare_parameter<double>(
+            "mag_yaw_offset",
+            mag_yaw_offset_);
+        mag_use_robust_loss_ = node->declare_parameter<bool>(
+            "mag_use_robust_loss",
+            mag_use_robust_loss_);
+        sonar_factor_enabled_ = node->declare_parameter<bool>(
+            "sonar_factor_enabled",
+            sonar_factor_enabled_);
+        sonar_match_max_dt_ = node->declare_parameter<double>(
+            "sonar_match_max_dt",
+            sonar_match_max_dt_);
+        sonar_range_noise_sigma_ = node->declare_parameter<double>(
+            "sonar_range_noise_sigma",
+            sonar_range_noise_sigma_);
+        sonar_use_robust_loss_ = node->declare_parameter<bool>(
+            "sonar_use_robust_loss",
+            sonar_use_robust_loss_);
+        pipe_radius_ = node->declare_parameter<double>(
+            "pipe_radius",
+            pipe_radius_);
         debug_attitude_prior_enabled_ = node->declare_parameter<bool>(
             "debug_attitude_prior_enabled",
             debug_attitude_prior_enabled_);
@@ -271,13 +554,23 @@ GraphManager::GraphManager(rclcpp::Node* node)
             ground_truth_pose_topic.c_str());
         RCLCPP_INFO(
             node->get_logger(),
-            "Depth/DVL config depth_sigma=%.3f pose_z_sigma=%.3f initial_velocity_sigma=%.3f dvl_match_max_dt=%.3f dvl_displacement=%s dvl_displacement_sigma=%.3f debug_attitude_prior=%s sigma=%.3f",
+            "Depth/DVL/MAG/Sonar config depth_sigma=%.3f pose_z_sigma=%.3f initial_velocity_sigma=%.3f dvl_match_max_dt=%.3f dvl_displacement=%s dvl_displacement_sigma=%.3f mag_enabled=%s mag_match_max_dt=%.3f mag_yaw_noise_sigma=%.3f mag_yaw_offset=%.3f mag_robust=%s sonar_enabled=%s sonar_match_max_dt=%.3f sonar_sigma=%.3f sonar_robust=%s pipe_radius=%.3f debug_attitude_prior=%s sigma=%.3f",
             depth_sigma_,
             pose_z_sigma_,
             initial_velocity_prior_sigma_,
             dvl_match_max_dt_,
             dvl_displacement_factor_enabled_ ? "true" : "false",
             dvl_displacement_sigma_,
+            mag_factor_enabled_ ? "true" : "false",
+            mag_match_max_dt_,
+            mag_yaw_noise_sigma_,
+            mag_yaw_offset_,
+            mag_use_robust_loss_ ? "true" : "false",
+            sonar_factor_enabled_ ? "true" : "false",
+            sonar_match_max_dt_,
+            sonar_range_noise_sigma_,
+            sonar_use_robust_loss_ ? "true" : "false",
+            pipe_radius_,
             debug_attitude_prior_enabled_ ? "true" : "false",
             debug_attitude_prior_sigma_);
     }
@@ -558,6 +851,8 @@ bool GraphManager::processBuffers(
     std::deque<TimedImuMeasurement>& imu_buffer,
     std::deque<TimedDepthMeasurement>& depth_buffer,
     std::deque<TimedDvlMeasurement>& dvl_buffer,
+    std::deque<TimedMagMeasurement>& mag_buffer,
+    std::deque<TimedSonarMeasurement>& sonar_buffer,
     rclcpp::Time& last_processed_imu_stamp)
 {
     if (imu_buffer.empty())
@@ -676,6 +971,85 @@ bool GraphManager::processBuffers(
         dvl_buffer.pop_front();
     }
 
+    TimedMagMeasurement matched_mag;
+    int64_t best_mag_dt_ns = std::numeric_limits<int64_t>::max();
+    bool mag_matched = false;
+
+    if (mag_factor_enabled_)
+    {
+        for (const auto& mag : mag_buffer)
+        {
+            const int64_t dt_ns =
+                std::llabs((mag.stamp - last_processed_imu_stamp).nanoseconds());
+            if (dt_ns < best_mag_dt_ns)
+            {
+                best_mag_dt_ns = dt_ns;
+                matched_mag = mag;
+            }
+        }
+    }
+
+    const double mag_time_diff =
+        best_mag_dt_ns == std::numeric_limits<int64_t>::max()
+            ? -1.0
+            : static_cast<double>(best_mag_dt_ns) * 1e-9;
+    mag_matched =
+        mag_factor_enabled_ &&
+        !mag_buffer.empty() &&
+        mag_time_diff <= mag_match_max_dt_;
+
+    while (!mag_buffer.empty() &&
+           mag_buffer.front().stamp < last_processed_imu_stamp)
+    {
+        mag_buffer.pop_front();
+    }
+
+    std::array<TimedSonarMeasurement, 4> matched_sonar;
+    std::array<int64_t, 4> best_sonar_dt_ns;
+    std::array<bool, 4> sonar_matched;
+    best_sonar_dt_ns.fill(std::numeric_limits<int64_t>::max());
+    sonar_matched.fill(false);
+
+    if (sonar_factor_enabled_)
+    {
+        for (const auto& sonar : sonar_buffer)
+        {
+            if (!sonar.valid)
+            {
+                continue;
+            }
+
+            for (size_t i = 0; i < kSonarNames.size(); ++i)
+            {
+                if (sonar.name != kSonarNames[i])
+                {
+                    continue;
+                }
+
+                const int64_t dt_ns =
+                    std::llabs((sonar.stamp - last_processed_imu_stamp).nanoseconds());
+                if (dt_ns < best_sonar_dt_ns[i])
+                {
+                    best_sonar_dt_ns[i] = dt_ns;
+                    matched_sonar[i] = sonar;
+                }
+            }
+        }
+
+        for (size_t i = 0; i < kSonarNames.size(); ++i)
+        {
+            sonar_matched[i] =
+                best_sonar_dt_ns[i] != std::numeric_limits<int64_t>::max() &&
+                static_cast<double>(best_sonar_dt_ns[i]) * 1e-9 <= sonar_match_max_dt_;
+        }
+    }
+
+    while (!sonar_buffer.empty() &&
+           sonar_buffer.front().stamp < last_processed_imu_stamp)
+    {
+        sonar_buffer.pop_front();
+    }
+
     const gtsam::Key pose_i_for_dvl = current_pose_key_;
     const double dvl_window_dt = (last_processed_imu_stamp - window_start).seconds();
     const ImuWindowKeys imu_keys = addImuFactor();
@@ -686,6 +1060,23 @@ bool GraphManager::processBuffers(
         dvl_matched ? matched_dvl.velocity_body : gtsam::Vector3::Zero();
     latest_dvl_pose_key_ = imu_keys.pose_j;
     latest_dvl_velocity_key_ = imu_keys.vel_j;
+    latest_mag_matched_ = mag_matched;
+    latest_mag_time_diff_ = mag_time_diff;
+    latest_mag_yaw_measured_ = 0.0;
+    latest_mag_residual_ = 0.0;
+    for (size_t i = 0; i < latest_sonar_.size(); ++i)
+    {
+        latest_sonar_[i] = LatestSonarDebug{
+            kSonarNames[i],
+            false,
+            best_sonar_dt_ns[i] == std::numeric_limits<int64_t>::max()
+                ? -1.0
+                : static_cast<double>(best_sonar_dt_ns[i]) * 1e-9,
+            0.0,
+            0.0,
+            gtsam::Vector3::Zero(),
+            gtsam::Vector3::Zero()};
+    }
 
     addDepthMeasurement(imu_keys.pose_j, imu_keys.z_j, matched_depth.depth);
 
@@ -710,6 +1101,109 @@ bool GraphManager::processBuffers(
             dvl_match_max_dt_,
             keyToString(imu_keys.pose_j).c_str(),
             keyToString(imu_keys.vel_j).c_str());
+    }
+
+    if (mag_factor_enabled_)
+    {
+        const double yaw_pred = yawFromPose(current_pose_estimate_);
+        if (mag_matched)
+        {
+            latest_mag_yaw_measured_ =
+                yawFromMagneticField(matched_mag.magnetic_field, mag_yaw_offset_);
+            latest_mag_residual_ =
+                wrapToPi(yaw_pred - latest_mag_yaw_measured_);
+            addMagYawFactor(
+                graph_,
+                imu_keys.pose_j,
+                latest_mag_yaw_measured_,
+                mag_yaw_noise_sigma_,
+                mag_use_robust_loss_);
+        }
+
+        if ((frame_index_ % 10) == 0 || !mag_matched)
+        {
+            RCLCPP_INFO(
+                logger_,
+                "[MAG] matched=%s dt=%.6f threshold=%.6f yaw_meas=%.6f yaw_pred=%.6f residual=%.6f pose_j=%s",
+                mag_matched ? "true" : "false",
+                mag_time_diff,
+                mag_match_max_dt_,
+                latest_mag_yaw_measured_,
+                yaw_pred,
+                latest_mag_residual_,
+                keyToString(imu_keys.pose_j).c_str());
+        }
+    }
+
+    if (sonar_factor_enabled_)
+    {
+        for (size_t i = 0; i < kSonarNames.size(); ++i)
+        {
+            double residual = 0.0;
+            double range = 0.0;
+            if (sonar_matched[i])
+            {
+                range = matched_sonar[i].range;
+                const double predicted_range = predictPipeWallRange(
+                    current_pose_estimate_,
+                    matched_sonar[i].offset_body,
+                    matched_sonar[i].direction_body,
+                    pipe_radius_);
+                residual =
+                    std::isfinite(predicted_range)
+                        ? predicted_range - matched_sonar[i].range
+                        : 10.0;
+
+                if (std::isfinite(predicted_range))
+                {
+                    addSonarRangeFactor(
+                        graph_,
+                        imu_keys.pose_j,
+                        matched_sonar[i],
+                        pipe_radius_,
+                        sonar_range_noise_sigma_,
+                        sonar_use_robust_loss_);
+                }
+                else
+                {
+                    sonar_matched[i] = false;
+                    RCLCPP_WARN(
+                        logger_,
+                        "[SONAR] %s predicted invalid range; skip factor pose_j=%s measured=%.3f",
+                        kSonarNames[i],
+                        keyToString(imu_keys.pose_j).c_str(),
+                        matched_sonar[i].range);
+                }
+            }
+
+            latest_sonar_[i] = LatestSonarDebug{
+                kSonarNames[i],
+                sonar_matched[i],
+                best_sonar_dt_ns[i] == std::numeric_limits<int64_t>::max()
+                    ? -1.0
+                    : static_cast<double>(best_sonar_dt_ns[i]) * 1e-9,
+                range,
+                residual,
+                sonar_matched[i] ? matched_sonar[i].offset_body : gtsam::Vector3::Zero(),
+                sonar_matched[i] ? matched_sonar[i].direction_body : gtsam::Vector3::Zero()};
+        }
+
+        if ((frame_index_ % 10) == 0)
+        {
+            for (const auto& sonar : latest_sonar_)
+            {
+                RCLCPP_INFO(
+                    logger_,
+                    "[SONAR] %s matched=%s dt=%.6f threshold=%.6f range=%.3f residual=%.3f pose_j=%s",
+                    sonar.name.c_str(),
+                    sonar.matched ? "true" : "false",
+                    sonar.time_diff,
+                    sonar_match_max_dt_,
+                    sonar.range,
+                    sonar.residual,
+                    keyToString(imu_keys.pose_j).c_str());
+            }
+        }
     }
 
     const gtsam::Vector3 predicted_body =
@@ -745,12 +1239,20 @@ bool GraphManager::processBuffers(
 
     RCLCPP_INFO(
         logger_,
-        "processBuffers imu_used=%zu depth_matched=true dvl_matched=%s depth_dt=%.6f dvl_time_diff=%.6f dvl_match_threshold=%.6f dvl_measured=[%.3f, %.3f, %.3f] current_velocity=[%.3f, %.3f, %.3f] imu_window=[%ld, %ld] remaining_imu=%zu remaining_depth=%zu remaining_dvl=%zu graph_size=%zu",
+        "processBuffers imu_used=%zu depth_matched=true dvl_matched=%s mag_matched=%s sonar_matched=[%s,%s,%s,%s] depth_dt=%.6f dvl_time_diff=%.6f mag_time_diff=%.6f dvl_match_threshold=%.6f mag_match_threshold=%.6f sonar_match_threshold=%.6f dvl_measured=[%.3f, %.3f, %.3f] current_velocity=[%.3f, %.3f, %.3f] imu_window=[%ld, %ld] remaining_imu=%zu remaining_depth=%zu remaining_dvl=%zu remaining_mag=%zu remaining_sonar=%zu graph_size=%zu",
         imu_used,
         dvl_matched ? "true" : "false",
+        mag_matched ? "true" : "false",
+        latest_sonar_[0].matched ? "true" : "false",
+        latest_sonar_[1].matched ? "true" : "false",
+        latest_sonar_[2].matched ? "true" : "false",
+        latest_sonar_[3].matched ? "true" : "false",
         static_cast<double>(best_dt_ns) * 1e-9,
         dvl_time_diff,
+        mag_time_diff,
         dvl_match_max_dt_,
+        mag_match_max_dt_,
+        sonar_match_max_dt_,
         dvl_matched ? matched_dvl.velocity_body.x() : 0.0,
         dvl_matched ? matched_dvl.velocity_body.y() : 0.0,
         dvl_matched ? matched_dvl.velocity_body.z() : 0.0,
@@ -762,6 +1264,8 @@ bool GraphManager::processBuffers(
         imu_buffer.size(),
         depth_buffer.size(),
         dvl_buffer.size(),
+        mag_buffer.size(),
+        sonar_buffer.size(),
         graph_.size());
 
     return true;
@@ -779,8 +1283,16 @@ void GraphManager::groundTruthCallback(
         msg->pose.position.x,
         msg->pose.position.y,
         msg->pose.position.z);
+    latest_ground_truth_yaw_ = yawFromPose(gtsam::Pose3(
+        gtsam::Rot3::Quaternion(
+            msg->pose.orientation.w,
+            msg->pose.orientation.x,
+            msg->pose.orientation.y,
+            msg->pose.orientation.z),
+        latest_ground_truth_position_));
     latest_ground_truth_stamp_ = rclcpp::Time(msg->header.stamp);
     has_ground_truth_ = true;
+    has_ground_truth_yaw_ = true;
 }
 
 void GraphManager::publishDebugLog(const rclcpp::Time& stamp)
@@ -801,10 +1313,32 @@ void GraphManager::publishDebugLog(const rclcpp::Time& stamp)
                   slam_position.y() - latest_ground_truth_position_.y(),
                   slam_position.z() - latest_ground_truth_position_.z())
             : gtsam::Vector3::Zero();
+    const double estimated_yaw = yawFromPose(current_pose_estimate_);
+    const double yaw_error =
+        has_ground_truth_yaw_
+            ? wrapToPi(estimated_yaw - latest_ground_truth_yaw_)
+            : 0.0;
+    std::array<double, 4> sonar_debug_residuals;
+    for (size_t i = 0; i < latest_sonar_.size(); ++i)
+    {
+        sonar_debug_residuals[i] = latest_sonar_[i].residual;
+        if (latest_sonar_[i].matched)
+        {
+            const double predicted_range = predictPipeWallRange(
+                current_pose_estimate_,
+                latest_sonar_[i].offset_body,
+                latest_sonar_[i].direction_body,
+                pipe_radius_);
+            sonar_debug_residuals[i] =
+                std::isfinite(predicted_range)
+                    ? predicted_range - latest_sonar_[i].range
+                    : latest_sonar_[i].residual;
+        }
+    }
 
     RCLCPP_INFO(
         logger_,
-        "[GT] ground_truth=(%.3f, %.3f, %.3f) slam=(%.3f, %.3f, %.3f) position_error=(%.3f, %.3f, %.3f) gt_available=%s",
+        "[GT] ground_truth=(%.3f, %.3f, %.3f) slam=(%.3f, %.3f, %.3f) position_error=(%.3f, %.3f, %.3f) gt_yaw=%.3f slam_yaw=%.3f yaw_error=%.3f gt_available=%s",
         has_ground_truth_ ? latest_ground_truth_position_.x() : 0.0,
         has_ground_truth_ ? latest_ground_truth_position_.y() : 0.0,
         has_ground_truth_ ? latest_ground_truth_position_.z() : 0.0,
@@ -814,6 +1348,9 @@ void GraphManager::publishDebugLog(const rclcpp::Time& stamp)
         position_error.x(),
         position_error.y(),
         position_error.z(),
+        has_ground_truth_yaw_ ? latest_ground_truth_yaw_ : 0.0,
+        estimated_yaw,
+        yaw_error,
         has_ground_truth_ ? "true" : "false");
 
     std::ostringstream stream;
@@ -844,7 +1381,24 @@ void GraphManager::publishDebugLog(const rclcpp::Time& stamp)
         << " dvl_time_diff " << latest_dvl_time_diff_
         << " dvl_residual_x " << dvl_residual.x()
         << " dvl_residual_y " << dvl_residual.y()
-        << " dvl_residual_z " << dvl_residual.z();
+        << " dvl_residual_z " << dvl_residual.z()
+        << " yaw_error " << yaw_error
+        << " mag_residual " << latest_mag_residual_
+        << " mag_matched " << (latest_mag_matched_ ? 1 : 0)
+        << " mag_time_diff " << latest_mag_time_diff_
+        << " mag_yaw_measured " << latest_mag_yaw_measured_
+        << " sonar_up_matched " << (latest_sonar_[0].matched ? 1 : 0)
+        << " sonar_down_matched " << (latest_sonar_[1].matched ? 1 : 0)
+        << " sonar_left_matched " << (latest_sonar_[2].matched ? 1 : 0)
+        << " sonar_right_matched " << (latest_sonar_[3].matched ? 1 : 0)
+        << " sonar_up_residual " << sonar_debug_residuals[0]
+        << " sonar_down_residual " << sonar_debug_residuals[1]
+        << " sonar_left_residual " << sonar_debug_residuals[2]
+        << " sonar_right_residual " << sonar_debug_residuals[3]
+        << " sonar_up_range " << latest_sonar_[0].range
+        << " sonar_down_range " << latest_sonar_[1].range
+        << " sonar_left_range " << latest_sonar_[2].range
+        << " sonar_right_range " << latest_sonar_[3].range;
 
     const std::string debug_line = stream.str();
     RCLCPP_INFO(logger_, "[SLAM_DEBUG] %s", debug_line.c_str());

@@ -120,6 +120,13 @@ install(DIRECTORY include/
   DESTINATION include
 )
 
+install(PROGRAMS
+  scripts/analyze_slam_csv.py
+  scripts/compare_baseline_sonar_csv.py
+  scripts/slam_debug_recorder.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 install(TARGETS
   navigation_node
   robot_driver_node

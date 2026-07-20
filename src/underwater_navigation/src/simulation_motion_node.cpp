@@ -22,7 +22,7 @@ public:
       sim_time_ns_(0),
       next_dvl_publish_ns_(0),
       has_ground_truth_origin_(false),
-      rng_(std::random_device{}()),
+      rng_(43),
       warned_missing_service_(false)
     {
         robot_model_name_ = declare_parameter<std::string>("robot_model_name", "pipe_robot");
@@ -47,6 +47,9 @@ public:
         dvl_topic_ = declare_parameter<std::string>("dvl_topic", "/dvl");
         dvl_noise_std_ = declare_parameter<double>("dvl_noise_std", 0.02);
         dvl_rate_hz_ = declare_parameter<double>("dvl_rate_hz", 10.0);
+        random_seed_ = declare_parameter<int>("random_seed", 42);
+        dvl_seed_ = random_seed_ + 1;
+        rng_.seed(static_cast<std::mt19937::result_type>(dvl_seed_));
         dvl_period_ns_ = rateToPeriodNs(dvl_rate_hz_);
         publish_clock_ = declare_parameter<bool>("publish_clock", true);
         use_relative_ground_truth_ =
@@ -80,7 +83,7 @@ public:
 
         RCLCPP_INFO(
             get_logger(),
-            "Simulation motion started model=%s service=%s start=[%.2f, %.2f, %.2f] vx=%.3f m/s y/z_amp=[%.3f, %.3f] rpy_amp=[%.3f, %.3f, %.3f] dvl=%s dvl_rate_hz=%.2f publish_clock=%s relative_gt=%s",
+            "Simulation motion started model=%s service=%s start=[%.2f, %.2f, %.2f] vx=%.3f m/s y/z_amp=[%.3f, %.3f] rpy_amp=[%.3f, %.3f, %.3f] dvl=%s dvl_rate_hz=%.2f publish_clock=%s relative_gt=%s random_seed=%d dvl_seed=%d",
             robot_model_name_.c_str(),
             set_entity_state_service_.c_str(),
             trajectory_parameters_.start_x,
@@ -95,7 +98,9 @@ public:
             dvl_topic_.c_str(),
             dvl_rate_hz_,
             publish_clock_ ? "true" : "false",
-            use_relative_ground_truth_ ? "true" : "false");
+            use_relative_ground_truth_ ? "true" : "false",
+            random_seed_,
+            dvl_seed_);
     }
 
 private:
@@ -278,6 +283,8 @@ private:
     std::unique_ptr<underwater_navigation::simulation::TrajectoryModel> trajectory_model_;
     double dvl_noise_std_;
     double dvl_rate_hz_;
+    int random_seed_;
+    int dvl_seed_;
     bool publish_clock_;
     bool use_relative_ground_truth_;
     int64_t sim_time_ns_;

@@ -1,0 +1,64 @@
+baseline_imu_depth_dvl_mag_6dof:
+  description: "Reproducible IMU + Depth + DVL + MAG 6DOF baseline configuration."
+
+  topics:
+    imu_topic: "/imu"
+    depth_topic: "/depth"
+    dvl_topic: "/dvl"
+    mag_topic: "/mag"
+    ground_truth_pose_topic: "/ground_truth/pose"
+    path_topic: "/slam_path"
+    slam_debug_topic: "/slam_debug"
+
+  navigation:
+    imu_window_size: 50
+    initial_velocity_prior_sigma: 1.0
+    dvl_match_max_dt: 0.10
+    dvl_displacement_factor_enabled: true
+    dvl_displacement_sigma: 0.05
+    mag_factor_enabled: true
+    mag_match_max_dt: 0.05
+    mag_yaw_noise_sigma: 0.10
+    mag_yaw_offset: 0.0
+    mag_use_robust_loss: true
+    debug_attitude_prior_enabled: false
+    debug_attitude_prior_sigma: 0.02
+
+  hardcoded_factor_noise:
+    depth_sigma: 0.05
+    pose_z_sigma: 0.20
+    dvl_velocity_sigma_x: 0.05
+    dvl_velocity_sigma_y: 0.05
+    dvl_velocity_sigma_z: 0.10
+
+  trajectory:
+    start_x: -14.0
+    start_y: 0.0
+    start_z: 0.0
+    forward_speed: 0.2
+    lateral_amp: 0.3
+    lateral_freq: 0.2
+    depth_amp: 0.2
+    depth_freq: 0.15
+    yaw_amp: 0.2
+    yaw_freq: 0.1
+    pitch_amp: 0.05
+    pitch_freq: 0.2
+    roll_amp: 0.05
+    roll_freq: 0.25
+
+  sensor_noise:
+    random_seed: 42
+    imu_acc_noise_std: 0.02
+    imu_gyro_noise_std: 0.001
+    dvl_noise_std: 0.02
+    depth_noise_std: 0.02
+    mag_noise_std: 0.01
+
+  recorder:
+    record_slam_debug: true
+    experiment_name: "imu_depth_dvl_mag_6dof_60s"
+    log_root: "/home/xiaoyang/water_robot/auv_ws/slam_logs"
+
+  notes:
+    depth_match_max_dt: "not currently exposed as a ROS parameter"

@@ -18,6 +18,22 @@ def generate_launch_description():
     robot_urdf = simulation_share / 'urdf' / 'pipe_robot.urdf'
     robot_description = robot_urdf.read_text()
     record_slam_debug = LaunchConfiguration('record_slam_debug')
+    experiment_name = LaunchConfiguration('experiment_name')
+    mag_factor_enabled = LaunchConfiguration('mag_factor_enabled')
+    mag_match_max_dt = LaunchConfiguration('mag_match_max_dt')
+    mag_yaw_noise_sigma = LaunchConfiguration('mag_yaw_noise_sigma')
+    mag_yaw_offset = LaunchConfiguration('mag_yaw_offset')
+    mag_use_robust_loss = LaunchConfiguration('mag_use_robust_loss')
+    pipe_radius = LaunchConfiguration('pipe_radius')
+    sonar_rate_hz = LaunchConfiguration('sonar_rate_hz')
+    sonar_noise_std = LaunchConfiguration('sonar_noise_std')
+    sonar_min_range = LaunchConfiguration('sonar_min_range')
+    sonar_max_range = LaunchConfiguration('sonar_max_range')
+    sonar_factor_enabled = LaunchConfiguration('sonar_factor_enabled')
+    sonar_match_max_dt = LaunchConfiguration('sonar_match_max_dt')
+    sonar_range_noise_sigma = LaunchConfiguration('sonar_range_noise_sigma')
+    sonar_use_robust_loss = LaunchConfiguration('sonar_use_robust_loss')
+    random_seed = LaunchConfiguration('random_seed')
 
     common_params = {
         'use_sim_time': True,
@@ -68,6 +84,7 @@ def generate_launch_description():
             'dvl_topic': '/dvl',
             'dvl_noise_std': 0.02,
             'dvl_rate_hz': 10.0,
+            'random_seed': random_seed,
             'publish_clock': False,
             'use_relative_ground_truth': True,
         }]
@@ -92,6 +109,24 @@ def generate_launch_description():
             'imu_gyro_noise_std': 0.001,
             'depth_noise_std': 0.02,
             'mag_noise_std': 0.01,
+            'random_seed': random_seed,
+            'pipe_radius': pipe_radius,
+            'sonar_rate_hz': sonar_rate_hz,
+            'sonar_noise_std': sonar_noise_std,
+            'sonar_min_range': sonar_min_range,
+            'sonar_max_range': sonar_max_range,
+            'sonar_up_offset_x': 0.0,
+            'sonar_up_offset_y': 0.0,
+            'sonar_up_offset_z': 0.0,
+            'sonar_down_offset_x': 0.0,
+            'sonar_down_offset_y': 0.0,
+            'sonar_down_offset_z': 0.0,
+            'sonar_left_offset_x': 0.0,
+            'sonar_left_offset_y': 0.0,
+            'sonar_left_offset_z': 0.0,
+            'sonar_right_offset_x': 0.0,
+            'sonar_right_offset_y': 0.0,
+            'sonar_right_offset_z': 0.0,
         }]
     )
 
@@ -106,6 +141,10 @@ def generate_launch_description():
             'depth_topic': '/depth',
             'dvl_topic': '/dvl',
             'mag_topic': '/mag',
+            'sonar_up_topic': '/sonar/up',
+            'sonar_down_topic': '/sonar/down',
+            'sonar_left_topic': '/sonar/left',
+            'sonar_right_topic': '/sonar/right',
             'ground_truth_pose_topic': '/ground_truth/pose',
             'path_topic': '/slam_path',
             'slam_debug_topic': '/slam_debug',
@@ -114,6 +153,28 @@ def generate_launch_description():
             'dvl_match_max_dt': 0.10,
             'dvl_displacement_factor_enabled': True,
             'dvl_displacement_sigma': 0.05,
+            'mag_factor_enabled': mag_factor_enabled,
+            'mag_match_max_dt': mag_match_max_dt,
+            'mag_yaw_noise_sigma': mag_yaw_noise_sigma,
+            'mag_yaw_offset': mag_yaw_offset,
+            'mag_use_robust_loss': mag_use_robust_loss,
+            'sonar_factor_enabled': sonar_factor_enabled,
+            'sonar_match_max_dt': sonar_match_max_dt,
+            'sonar_range_noise_sigma': sonar_range_noise_sigma,
+            'sonar_use_robust_loss': sonar_use_robust_loss,
+            'pipe_radius': pipe_radius,
+            'sonar_up_offset_x': 0.0,
+            'sonar_up_offset_y': 0.0,
+            'sonar_up_offset_z': 0.0,
+            'sonar_down_offset_x': 0.0,
+            'sonar_down_offset_y': 0.0,
+            'sonar_down_offset_z': 0.0,
+            'sonar_left_offset_x': 0.0,
+            'sonar_left_offset_y': 0.0,
+            'sonar_left_offset_z': 0.0,
+            'sonar_right_offset_x': 0.0,
+            'sonar_right_offset_y': 0.0,
+            'sonar_right_offset_z': 0.0,
             'debug_attitude_prior_enabled': False,
             'debug_attitude_prior_sigma': 0.02,
         }]
@@ -121,15 +182,14 @@ def generate_launch_description():
 
     slam_debug_recorder_node = Node(
         package='underwater_navigation',
-        executable='slam_debug_recorder_node',
+        executable='slam_debug_recorder.py',
         name='slam_debug_recorder_node',
         output='screen',
         condition=IfCondition(record_slam_debug),
         parameters=[{
             'slam_debug_topic': '/slam_debug',
-            'output_csv_path': (
-                '/home/xiaoyang/water_robot/auv_ws/'
-                'slam_logs/slam_debug_6dof.csv'),
+            'experiment_name': experiment_name,
+            'log_root': '/home/xiaoyang/water_robot/auv_ws/slam_logs',
         }]
     )
 
@@ -159,6 +219,70 @@ def generate_launch_description():
             'record_slam_debug',
             default_value='true',
             description='Record /slam_debug messages to the 6DOF experiment CSV.'),
+        DeclareLaunchArgument(
+            'experiment_name',
+            default_value='imu_depth_dvl_6dof',
+            description='Experiment name used by the SLAM debug CSV recorder.'),
+        DeclareLaunchArgument(
+            'mag_factor_enabled',
+            default_value='false',
+            description='Enable MAG yaw factor on the end pose of each IMU window.'),
+        DeclareLaunchArgument(
+            'mag_match_max_dt',
+            default_value='0.05',
+            description='Maximum timestamp difference for matching MAG to IMU window end.'),
+        DeclareLaunchArgument(
+            'mag_yaw_noise_sigma',
+            default_value='0.10',
+            description='MAG yaw factor noise sigma in radians.'),
+        DeclareLaunchArgument(
+            'mag_yaw_offset',
+            default_value='0.0',
+            description='Yaw offset added to the MAG yaw measurement in radians.'),
+        DeclareLaunchArgument(
+            'mag_use_robust_loss',
+            default_value='true',
+            description='Wrap MAG yaw noise model with a Huber robust loss.'),
+        DeclareLaunchArgument(
+            'pipe_radius',
+            default_value='2.5',
+            description='Circular pipe inner radius in meters for simulated range sonar.'),
+        DeclareLaunchArgument(
+            'sonar_rate_hz',
+            default_value='20.0',
+            description='Publishing rate for four-direction range sonar topics.'),
+        DeclareLaunchArgument(
+            'sonar_noise_std',
+            default_value='0.02',
+            description='Gaussian noise standard deviation for simulated range sonar.'),
+        DeclareLaunchArgument(
+            'sonar_min_range',
+            default_value='0.05',
+            description='Minimum valid sonar range in meters.'),
+        DeclareLaunchArgument(
+            'sonar_max_range',
+            default_value='5.0',
+            description='Maximum valid sonar range in meters.'),
+        DeclareLaunchArgument(
+            'sonar_factor_enabled',
+            default_value='false',
+            description='Enable four-direction sonar pipe geometry factors.'),
+        DeclareLaunchArgument(
+            'sonar_match_max_dt',
+            default_value='0.05',
+            description='Maximum timestamp difference for matching sonar to IMU window end.'),
+        DeclareLaunchArgument(
+            'sonar_range_noise_sigma',
+            default_value='0.05',
+            description='Sonar range factor noise sigma in meters.'),
+        DeclareLaunchArgument(
+            'sonar_use_robust_loss',
+            default_value='true',
+            description='Wrap sonar range factor with a Huber robust loss.'),
+        DeclareLaunchArgument(
+            'random_seed',
+            default_value='42',
+            description='Base random seed for reproducible simulated sensor noise.'),
         gazebo_launch,
         delayed_nodes,
     ])
